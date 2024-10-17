@@ -1,10 +1,12 @@
 package martinez.javier.chat
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
 import martinez.javier.chat.Fragmentos.FragmentChats
 import martinez.javier.chat.Fragmentos.FragmentPerfil
 import martinez.javier.chat.Fragmentos.FragmentUsuarios
@@ -14,6 +16,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var biding : ActivityMainBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+
 
 
 
@@ -26,6 +30,14 @@ class MainActivity : AppCompatActivity() {
 
         biding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(biding.root)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        //Comprobar si el usuario esta logueado o sea igual null
+        //Si el usuario no esta logueado, no va aceder al mainactivitu
+        //Sino que lo va a dirigir a OpcionesLoginActivity
+        if (firebaseAuth.currentUser == null){
+            irOpcionesLogin()
+        }
 
         //Fragmento por defecto
         verFragmentoPerfil()
@@ -58,6 +70,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+    //Permite redirigir e3l mqinqdtivity hacia la actividad de login en el caso de que el usuario sea igual a null
+    private fun irOpcionesLogin() {
+        startActivity(Intent(applicationContext, OpcionesLoginActivity::class.java))
     }
 
     private fun verFragmentoPerfil(){

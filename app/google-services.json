@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "669330987916",
+    "project_id": "mobilebusiness-51055",
+    "storage_bucket": "mobilebusiness-51055.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669330987916:android:f7800c5fcd9f5e520954a9",
+        "android_client_info": {
+          "package_name": "martinez.javier.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtS2n8e3SIBpNBio2A13NiVnYdSWs7Cbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
