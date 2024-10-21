@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     //Permite redirigir e3l mqinqdtivity hacia la actividad de login en el caso de que el usuario sea igual a null
     private fun irOpcionesLogin() {
         startActivity(Intent(applicationContext, OpcionesLoginActivity::class.java))
+        finishAffinity() //La actividad maainactivity se cierra
     }
 
     private fun verFragmentoPerfil(){

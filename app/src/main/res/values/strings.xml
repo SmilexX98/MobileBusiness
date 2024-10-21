@@ -16,11 +16,13 @@
     <string name="btn_Ingresar">Ingresar</string>
     <string name="txt_no_tines_cuenta">¿No tienes una cuenta?</string>
     <string name="tv_registrarme">Registrarme</string>
-    
+
     <string name="txt_registro">Registro</string>
     <string name="et_Nombres">Nombres</string>
     <string name="et_R_Password">Repita la contraseña</string>
     <string name="btn_Registrar">Registrar</string>
+
+    <string name="btn_Cerrarsesion">Cerrar sesión</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
