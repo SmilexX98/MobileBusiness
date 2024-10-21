@@ -2,8 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
 
-    id("com.google.gms.google-services")
-    //alias(libs.plugins.googleService)
+    alias(libs.plugins.googleServices)
+
+   // id("com.google.gms.google-services")
+
 }
 
 android {
@@ -57,12 +59,15 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-   //SE NECESITAN SI SE USA LA FORMA ANTIGUA EN PLUGINS A NIVEL MODULE (ARRIBA) Y PLUGINS A NIVEL PROJECT
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.realtime)
 
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-database-ktx")
+   //SE NECESITAN SI SE USA LA FORMA ANTIGUA EN PLUGINS A NIVEL MODULE (ARRIBA) Y PLUGINS A NIVEL PROJECT
+    //implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    //implementation("com.google.firebase:firebase-analytics")
+
+    //implementation("com.google.firebase:firebase-auth")
+    //implementation("com.google.firebase:firebase-database-ktx")
 
 
 
