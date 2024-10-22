@@ -105,33 +105,45 @@ class OpcionesLoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun autenticarCuentaGoogle(idToken: String?) {
+    private fun autenticarCuentaGoogle(idToken: String?){
         val credencial = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credencial)
-            .addOnSuccessListener { authResultado ->
+            .addOnSuccessListener {authResultado ->
                 val email = firebaseAuth.currentUser?.email
                 //Si se quiere dos dominios diferentes
                 //if (email != null && (email.endsWith("DOMINIO_1") || email.endsWith("DOMINIO_2")))
-                if (email != null && email.endsWith("@alumnos.udg.mx")) {
-                    // Si el dominio es correcto
-                    if (authResultado.additionalUserInfo!!.isNewUser) {
+                if (email != null && email.endsWith("@alumnos.udg.mx")){
+                    // Si el dominio es correcto, proceder normalmente
+                    if (authResultado.additionalUserInfo!!.isNewUser){
                         actualizarInfoUsuario()
-                    } else {
+                    } else{
                         startActivity(Intent(this, MainActivity::class.java))
                         finishAffinity()
                     }
-                } else {
-                    // Si el dominio no es "alumnos.udg.mx", cerrar la sesión
+                } else{
+                    // Si el dominio no es permitido, eliminar el usuario de Firebase Authentication
+                    firebaseAuth.currentUser?.delete()
+                        ?.addOnCompleteListener {task->
+                            if (task.isSuccessful){
+                                Toast.makeText(
+                                    this,
+                                    "Debes utilizar una cuenta insititucional",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else{
+                                Toast.makeText(
+                                    this,
+                                    "No se pudo eliminar la cuenta. Inténtalo de nuevo.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    // Cerrar sesión en Firebase y Google
                     firebaseAuth.signOut()
-                    mGoogleSingInClient.signOut() // Cerrar sesión en Google también
-                    Toast.makeText(
-                        this,
-                        "Debes utilizar una cuenta institucional",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    mGoogleSingInClient.signOut()
                 }
             }
-            .addOnFailureListener {e->
+            .addOnFailureListener{e->
                 Toast.makeText(
                     this,
                     "${e.message}",
