@@ -128,6 +128,8 @@ class RegistroEmailActivity : AppCompatActivity() {
         datosUsuario["proveedor"] = "Email"
         datosUsuario["estado"] = "Online"
 
+        datosUsuario["imagen"] = ""
+
         val reference = FirebaseDatabase.getInstance().getReference("Usuarios")
         reference.child(uidU!!)
             .setValue(datosUsuario)
