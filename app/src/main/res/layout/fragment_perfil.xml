@@ -94,11 +94,22 @@
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ActualizarInfo"
+            android:text="@string/btn_ActualizarInfo"
+            android:textAllCaps="true"
+            android:layout_below="@id/tv_t_registro"
+            android:layout_centerInParent="true"
+            app:cornerRadius="8dp"
+            android:layout_marginTop="25dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_Cerrarsesion"
             android:text="@string/btn_Cerrarsesion"
             android:textAllCaps="true"
-            android:layout_below="@id/txt_t_registro"
-            android:layout_marginTop="25dp"
+            android:layout_below="@id/btn_ActualizarInfo"
+            android:layout_marginTop="10dp"
             android:layout_centerInParent="true"
             app:cornerRadius="8dp"
             android:layout_gravity="center"

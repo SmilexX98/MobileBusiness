@@ -3,7 +3,6 @@ package martinez.javier.chat.Fragmentos
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import martinez.javier.chat.Constantes
+import martinez.javier.chat.EditarInformacionActivity
 import martinez.javier.chat.OpcionesLoginActivity
 import martinez.javier.chat.R
 import martinez.javier.chat.databinding.FragmentPerfilBinding
@@ -45,6 +45,11 @@ class FragmentPerfil : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         cargarInformacion()
+
+        binding.btnActualizarInfo.setOnClickListener {
+            //mContext = de este fragmento a....
+            startActivity(Intent(mContext, EditarInformacionActivity::class.java))
+        }
 
         binding.btnCerrarsesion.setOnClickListener {
             firebaseAuth.signOut() //Cerrar sesion
