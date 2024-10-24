@@ -63,7 +63,7 @@
                     android:layout_height="120dp"/>
                 
                 <ImageView
-                    android:id="@+id/IvEditar"
+                    android:id="@+id/IvEditarImg"
                     android:src="@drawable/icono_editar"
                     android:layout_alignParentEnd="true"
                     android:layout_width="50dp"
