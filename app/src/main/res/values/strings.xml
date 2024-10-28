@@ -27,6 +27,8 @@
 
     <string name="btn_ActualizarInfo">Actualizar</string>
     <string name="btn_Cerrarsesion">Cerrar sesión</string>
+    
+    <string name="btn__CambiarPass">Cambiar contraseña</string>
 
     <!-- txt: Nombre del dato que se traera desde firebase (Nombres, Email, Proveedor, Miembor desde) -->
     <!-- tv: Almacenan el dato que se trae directamente desde firebase -->
@@ -42,11 +44,16 @@
 
     <string name="txt_titulo_edit">Editar información</string>
     <string name="btn_Actualizar">Actualizar</string>
-    
+
     <string name="txt_olvide_password">Olvidé password</string>
     <string name="txt_ingrese_email">Ingrese su email para recuperar la cuenta</string>
     <string name="btn_Enviar">Enviar</string>
 
+    <string name="txt_cambiar_pass">Cambiar contraseña</string>
+    <string name="et_pass_actual">Contraseña actual</string>
+    <string name="et_pass_nueva">Contraseña nueva</string>
+    <string name="et_r_pass_nueva">Repita contraseña nueva</string>
+    <string name="btn_CambiarPassword">Cambiar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

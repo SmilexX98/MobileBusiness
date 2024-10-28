@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import martinez.javier.chat.CambiarPasswordActivity
 import martinez.javier.chat.Constantes
 import martinez.javier.chat.EditarInformacionActivity
 import martinez.javier.chat.OpcionesLoginActivity
@@ -49,6 +50,11 @@ class FragmentPerfil : Fragment() {
         binding.btnActualizarInfo.setOnClickListener {
             //mContext = de este fragmento a....
             startActivity(Intent(mContext, EditarInformacionActivity::class.java))
+        }
+
+        //ELIMINAR SI SE DECIDE NO INGRESAR POR EMAIL
+        binding.btnCambiarPass.setOnClickListener {
+            startActivity(Intent(mContext, CambiarPasswordActivity::class.java))
         }
 
         binding.btnCerrarsesion.setOnClickListener {
@@ -94,6 +100,11 @@ class FragmentPerfil : Fragment() {
                             "${e.message}",
                             Toast.LENGTH_SHORT
                         ).show()
+                    }
+
+                    //ELIMINAR SI SE DECIDE NO INGRESAR POR EMAIL
+                    if (proveedor == "Email"){
+                        binding.btnCambiarPass.visibility = View.VISIBLE
                     }
 
 
