@@ -1,14 +1,17 @@
 package martinez.javier.chat
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import martinez.javier.chat.Chat.ChatActivity
 
 class AdaptadorUsuario(//Implementar miembros
     //Parametros
@@ -42,6 +45,17 @@ class AdaptadorUsuario(//Implementar miembros
         holder.email.text = usuario.email
         holder.nombres.text = usuario.nombres
         Glide.with(context).load(usuario.imagen).placeholder(R.drawable.ic_imagen_perfil).into(holder.imagen)
+
+        //Para al sleccionar un usuario se vaya a chat
+        holder.itemView.setOnClickListener {
+            //item que permite dirigir de este adaptador a chatActivity
+            val intent = Intent(context, ChatActivity::class.java)
+            //Se pasa como parametro el uid del usuario
+            intent.putExtra("uid", holder.uid.text)
+            //Comprobacion
+            Toast.makeText(context, "Se ha seleccionado al usuario ${holder.nombres.text}", Toast.LENGTH_SHORT).show()
+            context.startActivity(intent)
+        }
     }
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
