@@ -11,28 +11,6 @@
     android:gravity="center"
     tools:context=".OpcionesLoginActivity">
 
-    <TextView
-        android:text="@string/Welcome"
-        android:textSize="18sp"
-        android:textAllCaps="true"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Mobile_Business"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textAllCaps="true"
-        android:textColor="@color/white"/>
-
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher" />
-    
     <com.google.android.material.button.MaterialButton
         android:id="@+id/opcionEmail"
         android:text="@string/opcionEmail"
