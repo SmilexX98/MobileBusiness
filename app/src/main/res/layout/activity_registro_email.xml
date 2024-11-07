@@ -9,6 +9,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
+    android:background="@color/black"
     tools:context=".RegistroEmailActivity">
 
     <TextView
@@ -17,12 +18,13 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
     
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/registro_usuario"
+        android:src="@mipmap/ic_launcher"
         android:layout_marginTop="15dp"/>
 
     <!--Nombres-->
@@ -36,7 +38,8 @@
             android:hint="@string/et_Nombres"
             android:inputType="textCapWords|textPersonName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,7 +53,8 @@
             android:hint="@string/et_Email"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,7 +69,8 @@
             android:hint="@string/et_Password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +85,8 @@
             android:hint="@string/et_R_Password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
     
@@ -91,6 +97,7 @@
         android:layout_marginTop="15dp"
         app:cornerRadius="8dp"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/Tinto"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

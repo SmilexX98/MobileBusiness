@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black"
     tools:context=".EditarInformacionActivity">
     
     <RelativeLayout
@@ -30,7 +31,8 @@
             android:textSize="16sp"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
         
         <View
             android:background="#cccccc"
@@ -87,7 +89,8 @@
                     android:hint="@string/et_Nombres"
                     android:inputType="textPersonName|textCapWords"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"/>
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -100,7 +103,8 @@
                 android:layout_marginTop="10dp"
                 app:cornerRadius="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/Tinto"/>
             
         </RelativeLayout>
         

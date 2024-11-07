@@ -6,6 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".MainActivity">
 
     <!-- TOOLBAR -->
@@ -20,13 +21,16 @@
             android:textStyle="bold"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
 
         <View
             android:layout_alignParentBottom="true"
             android:background="#ccc"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:backgroundTint="@color/Tinto"/>
 
     </RelativeLayout>
     
@@ -42,7 +46,8 @@
         android:layout_above="@+id/bottomNV"
         android:background="#ccc"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:backgroundTint="@color/Tinto"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNV"
@@ -50,6 +55,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="-1dp"
-        app:menu="@menu/menu_bottom" />
+        app:menu="@menu/menu_bottom"
+        android:background="@color/black"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"/>
 
 </RelativeLayout>

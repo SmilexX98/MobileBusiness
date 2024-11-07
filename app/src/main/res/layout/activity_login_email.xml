@@ -8,35 +8,45 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@color/black"
     android:padding="10dp"
     tools:context=".LoginEmailActivity">
-    
     <TextView
-        android:text="@string/txt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Binevenidos"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
+    <TextView
+        android:text="@string/Mobile_Business"
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    
+        android:layout_height="wrap_content"
+        android:textColor="@color/white" />
+
     <ImageView
-        android:src="@drawable/login_usuario"
+        android:src="@mipmap/ic_launcher"
         android:layout_marginTop="15dp"
-        android:layout_width="100dp"
-        android:layout_height="100dp"/>
+        android:layout_width="110dp"
+        android:layout_height="110dp"/>
 
     <!--Email-->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <EditText
             android:id="@+id/et_Email"
             android:hint="@string/et_Email"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +54,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        android:background="@color/white">
 
         <EditText
             android:id="@+id/et_Password"
@@ -62,7 +73,10 @@
         android:layout_gravity="end"
         android:layout_marginEnd="8dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
+
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_Ingresar"
@@ -71,16 +85,19 @@
         android:layout_marginTop="15dp"
         app:cornerRadius="8dp"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"/>
-    
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/Tinto"/>
+
     <TextView
         android:text="@string/txt_no_tines_cuenta"
         android:textSize="15sp"
         android:layout_marginTop="20dp"
-        
+
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
+
     <TextView
         android:id="@+id/tv_registrarme"
         android:text="@string/tv_registrarme"
@@ -88,6 +105,10 @@
         android:textStyle="bold"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"/>
+
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

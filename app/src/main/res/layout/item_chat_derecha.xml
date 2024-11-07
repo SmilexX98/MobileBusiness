@@ -8,6 +8,7 @@
     android:layout_marginStart="100dp"
     app:cardUseCompatPadding="true"
     android:padding="15dp"
+    android:background="@color/black"
     app:cardCornerRadius="10dp">
 
     <androidx.appcompat.widget.LinearLayoutCompat

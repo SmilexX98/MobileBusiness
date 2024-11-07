@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name= "Tinto">#B71C1C</color>
+    <color name="blue">#42A5F5</color>
+
 </resources>

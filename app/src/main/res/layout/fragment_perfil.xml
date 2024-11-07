@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
+    android:background="@color/black"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragmentos.FragmentPerfil">
     
@@ -28,7 +29,8 @@
             android:layout_below="@+id/iv_perfil"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tv_nombres"
@@ -37,7 +39,8 @@
             android:layout_marginTop="20dp"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
         <!--Email-->
         <TextView
@@ -46,7 +49,8 @@
             android:layout_below="@+id/txt_nombres"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tv_email"
@@ -55,7 +59,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"/>
 
         <!--Poveedor-->
         <TextView
@@ -64,7 +69,8 @@
             android:layout_marginTop="20dp"
             android:layout_below="@id/txt_email"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tv_proveedor"
@@ -73,7 +79,8 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@id/txt_email"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
         <!--Tiempo de registro-->
         <TextView
@@ -82,7 +89,8 @@
             android:layout_below="@id/txt_proveedor"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/tv_t_registro"
@@ -91,7 +99,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/Tinto"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ActualizarInfo"
@@ -102,7 +111,8 @@
             app:cornerRadius="8dp"
             android:layout_marginTop="25dp"
             android:layout_width="250dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/Tinto"/>
 
         <!-- DEV Eliminar Si se decide no ingresar por email-->
         <com.google.android.material.button.MaterialButton
@@ -114,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone"
+            android:backgroundTint="@color/Tinto"
             android:layout_marginTop="10dp"
             app:cornerRadius="8dp"/>
 
@@ -128,7 +139,8 @@
             app:cornerRadius="8dp"
             android:layout_gravity="center"
             android:layout_width="250dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"/>
 
     </RelativeLayout>
 
