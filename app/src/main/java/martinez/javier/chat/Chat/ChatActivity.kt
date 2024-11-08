@@ -87,21 +87,5 @@ class ChatActivity : AppCompatActivity() {
                     TODO("Not yet implemented")
                 }
             })
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
 }
