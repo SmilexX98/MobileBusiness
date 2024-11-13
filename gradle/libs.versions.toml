@@ -18,6 +18,8 @@ circleImage = "3.1.0"
 glide = "4.16.0"
 firebaseStorage = "20.3.0"
 
+lottieV = "6.6.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
@@ -35,6 +37,8 @@ login-google = {group = "com.google.android.gms", name = "play-services-auth", v
 circle-image = {group = "de.hdodenhof", name = "circleimageview", version.ref = "circleImage"}
 glide = {group = "com.github.bumptech.glide", name = "glide", version.ref = "glide"}
 firebase-storage ={group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage"}
+
+lottie = {module= "com.airbnb.android:lottie", version.ref = "lottieV"}
 
 
 

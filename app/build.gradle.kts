@@ -68,7 +68,8 @@ dependencies {
 
     implementation(libs.firebase.storage)
 
-    implementation ("com.airbnb.android:lottie:6.6.0")
+   // implementation ("com.airbnb.android:lottie:6.6.0")
+    implementation(libs.lottie)
 
    //SE NECESITAN SI SE USA LA FORMA ANTIGUA EN PLUGINS A NIVEL MODULE (ARRIBA) Y PLUGINS A NIVEL PROJECT
     //implementation(platform("com.google.firebase:firebase-bom:33.4.0"))

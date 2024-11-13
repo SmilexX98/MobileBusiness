@@ -1,98 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="@color/black"
+    tools:context=".EditarInformacionActivity">
 
-    <!-- Botón de regreso en la esquina superior izquierda -->
+    <RelativeLayout
+        android:id="@+id/toolbarRL"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
 
-    <!-- Contenedor de opciones en cuadrícula -->
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/btnBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:lottie_rawRes="@raw/anillo"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="64dp"
-        android:columnCount="2"
-        android:rowCount="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
-        app:layout_constraintVertical_bias="0.0">
-
-        <!-- Opción 1 -->
         <ImageButton
-            app:lottie_url="REPLACE_JSON_URL"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:id="@+id/option1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:background="@color/Tinto">
+            android:id="@+id/IbRegresar"
+            android:src="@drawable/ic_regresar"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-            <!-- Agregar contenido dentro de cada opción -->
-        </ImageButton>
+        <TextView
+            android:id="@+id/txt_titulo_edit"
+            android:text="@string/txt_categorias"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"/>
 
-        <!-- Opción 2 -->
-        <ImageButton
-            app:lottie_url="REPLACE_JSON_URL"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:id="@+id/option2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:background="@color/Tinto" />
+        <View
+            android:background="#cccccc"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
-        <!-- Opción 3 -->
-        <ImageView
-            app:lottie_url="REPLACE_JSON_URL"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:id="@+id/option3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:background="@color/Tinto" />
+    </RelativeLayout>
 
-        <!-- Opción 4 -->
-        <ImageButton
-            app:lottie_url="REPLACE_JSON_URL"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:id="@+id/option4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"
-            android:layout_columnWeight="1"
-            android:layout_margin="8dp"
-            android:background="@color/Tinto" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
-    </GridLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Botón 1 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button1"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_margin="12dp"
+            android:backgroundTint="@color/Tinto"
+            android:cornerRadius="16dp"
+            android:text="@string/txt_btcomida"
+            android:textSize="18sp" />
+
+        <!-- Botón 2 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button2"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_margin="12dp"
+            android:backgroundTint="@color/Tinto"
+            android:cornerRadius="16dp"
+            android:text="@string/txt_btbebidas"
+            android:textSize="18sp" />
+
+        <!-- Botón 3 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button3"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_margin="12dp"
+            android:backgroundTint="@color/Tinto"
+            android:cornerRadius="16dp"
+            android:text="@string/txt_btropa"
+            android:textSize="18sp" />
+
+        <!-- Botón 4 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button4"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_margin="12dp"
+            android:backgroundTint="@color/Tinto"
+            android:cornerRadius="16dp"
+            android:text="@string/txt_btotros"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

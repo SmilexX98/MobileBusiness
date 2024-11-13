@@ -73,5 +73,11 @@
     <string name="Binevenidos">Bienvenidos</string>
     <string name="Mobile_Business">Mobile Business</string>
 
+    <string name="txt_categorias">Categorías</string>
+    <string name="txt_btcomida">Comida</string>
+    <string name="txt_btropa">Ropa</string>
+    <string name="txt_btbebidas">Bebidas</string>
+    <string name="txt_btotros">Otros</string>
+
 
 </resources>
