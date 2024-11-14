@@ -51,8 +51,8 @@
         <!-- Botón 1 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button1"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="12dp"
             android:backgroundTint="@color/Tinto"
             android:cornerRadius="16dp"
@@ -62,8 +62,8 @@
         <!-- Botón 2 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button2"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="12dp"
             android:backgroundTint="@color/Tinto"
             android:cornerRadius="16dp"
@@ -73,8 +73,8 @@
         <!-- Botón 3 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button3"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="12dp"
             android:backgroundTint="@color/Tinto"
             android:cornerRadius="16dp"
@@ -84,8 +84,8 @@
         <!-- Botón 4 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button4"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_margin="12dp"
             android:backgroundTint="@color/Tinto"
             android:cornerRadius="16dp"
