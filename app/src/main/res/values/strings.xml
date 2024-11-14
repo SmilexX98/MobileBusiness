@@ -78,6 +78,8 @@
     <string name="txt_btropa">Ropa</string>
     <string name="txt_btbebidas">Bebidas</string>
     <string name="txt_btotros">Otros</string>
+    <string name="et_buscar">Buscar</string>
+    <string name="tv_fecha">dd/MM/yyyy</string>
 
 
 </resources>
