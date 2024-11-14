@@ -72,6 +72,8 @@
     <string name="Welcome">Welcome</string>
     <string name="Binevenidos">Bienvenidos</string>
     <string name="Mobile_Business">Mobile Business</string>
+    <string name="et_buscar">Buscar</string>
+    <string name="tv_fecha">dd/MM/yyyy</string>
 
 
 </resources>

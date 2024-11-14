@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -111,6 +112,11 @@ class ChatActivity : AppCompatActivity() {
                     }
                     val adaptadorChat = AdaptadorChat(this@ChatActivity, mensajesArrayList)
                     binding.chatsRV.adapter = adaptadorChat
+                    //Configuracion para ver los mensajes dede la parte inferior
+                    binding.chatsRV.setHasFixedSize(true)
+                    var linearLayoutManager = LinearLayoutManager(this@ChatActivity)
+                    linearLayoutManager.stackFromEnd = true
+                    binding.chatsRV.layoutManager = linearLayoutManager
                 }
 
                 override fun onCancelled(error: DatabaseError) {
