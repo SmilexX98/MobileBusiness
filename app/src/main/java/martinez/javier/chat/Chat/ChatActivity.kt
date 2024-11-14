@@ -1,9 +1,14 @@
 package martinez.javier.chat.Chat
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,7 +18,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import martinez.javier.chat.Adaptadores.AdaptadorChat
 import martinez.javier.chat.Constantes
+import martinez.javier.chat.Modelos.Chat
 import martinez.javier.chat.R
 import martinez.javier.chat.databinding.ActivityChatBinding
 
@@ -50,13 +58,78 @@ class ChatActivity : AppCompatActivity() {
         miUid = firebaseAuth.uid!!
         chatRuta = Constantes.rutaChat(uid, miUid)
 
+        binding.adjuntarFAB.setOnClickListener {
+            //Verificar version android
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                imagenGaleria() //No necesario conceder el perimiso
+            }else {
+                solicitarPermisoAlmacenamiento.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+
+        //Funcionalidad del boton de regresar, para regresar a la actividad anterior vaya...
+        binding.IbRegresar.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        //Evento
+        binding.enviarFAB.setOnClickListener {
+            validarMensaje()
+        }
+
         //Llamar funcion
         cargarInfo()
+        cargarMensaje()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+    }
+
+    private fun cargarMensaje() {
+        //Iniciar el arraylist
+        val mensajesArrayList = ArrayList<Chat>()
+        //Referencia a la BD de los chats
+        val ref = FirebaseDatabase.getInstance().getReference("Chats")
+        ref.child(chatRuta)
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    //Limpiear la lista
+                    mensajesArrayList.clear()
+                    //Recorrido de la BD
+                    for (ds : DataSnapshot in snapshot.children){
+                        try {
+                            //Preparar modeo chat para recuperar toda la informacion
+                            val chat = ds.getValue(Chat::class.java)
+                            mensajesArrayList.add(chat!!)
+
+                        }catch (e:Exception){
+
+                        }
+                    }
+                    val adaptadorChat = AdaptadorChat(this@ChatActivity, mensajesArrayList)
+                    binding.chatsRV.adapter = adaptadorChat
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+    }
+
+    private fun validarMensaje() {
+        val mensaje = binding.etMensajeChat.text.toString().trim()
+        val tiempo = Constantes.obtenerTiempoD()
+        if (mensaje.isEmpty()){
+            Toast.makeText(
+                this,
+                "Ingrese mensaje",
+                Toast.LENGTH_SHORT
+            ).show()
+        }else{
+            enviarMensaje(Constantes.MENSAJE_TEXTO, mensaje, tiempo)//Tipo de mensaje, mensaje(TEXTO) y tiempo
         }
     }
 
@@ -88,4 +161,108 @@ class ChatActivity : AppCompatActivity() {
                 }
             })
     }
+
+    private fun imagenGaleria(){
+        //Abrir actividad para selecionar una imagen de la galeria
+        val intent  = Intent(Intent.ACTION_PICK)
+        //Filtrar imagenes solamente
+        intent.type = "image/*"
+        resultadoGaleriaARL.launch(intent)
+    }
+    //Activity Result Launcher
+
+    private val resultadoGaleriaARL=
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){resultado->
+            //Comprobar con resultado si la imagen a sido seleccionada correctamnet de la galeria
+            if (resultado.resultCode == Activity.RESULT_OK){//Si la imagen a sido seleccionadad...
+                val data = resultado.data
+                imagenUri = data!!.data //Almacenar dentro del URI la imagen seleccionada
+                subirImagenStorage()
+            }else{
+                //Si el usuario cancela la seleccion de la imagen...
+                Toast.makeText(
+                    this,
+                    "Cancelado",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        }
+
+    //Solicidtud permiso de almacenamiento
+    private val solicitarPermisoAlmacenamiento =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){Concedido->
+            //Habilitado el permiso¿?
+            if (Concedido){
+                imagenGaleria()
+            }else{
+                Toast.makeText(
+                    this,
+                    "Permiso no concedido",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+        }
+
+    private fun subirImagenStorage(){
+        progressDialog.setMessage("Subiendo imagen...")
+        progressDialog.show()
+        val tiempo = Constantes.obtenerTiempoD()
+        //Configurar nombre y ruta de la carpeta donde almacenar las imagenes enviadas por los usuarios en firebase
+        val nombreRutaImg = "ImagenesChat/$tiempo" //Practicamente tiempo = ID de las imagenes
+        //Ref BD
+        val storageRef = FirebaseStorage.getInstance().getReference(nombreRutaImg)
+        storageRef.putFile(imagenUri!!)//En Uri se alamcena la imagen seleccionada de la galeria
+            .addOnSuccessListener {taskSnapshot->
+                //Obtener url de la imagen para ponerla en la BD
+                val uriTask = taskSnapshot.storage.downloadUrl
+                while (!uriTask.isSuccessful);
+                //Convertir a string esa url
+                val urlImagen = uriTask.result.toString()
+                if (uriTask.isSuccessful){
+                    enviarMensaje(Constantes.MENSAJE_IMAGEN, urlImagen, tiempo)//Tipo de mensaje, mensaje(IMAGEN) y tiempo
+                }
+            }
+            .addOnFailureListener {e->
+                Toast.makeText(
+                    this,
+                    "Error al enviar imagen: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+    }
+
+    private fun enviarMensaje(tipoMensaje: String, mensaje: String, tiempo: Long) {
+        progressDialog.setMessage("Enviando mensaje...")
+        progressDialog.show()
+        //Referencia a la BD
+        val refChat = FirebaseDatabase.getInstance().getReference("Chats")//La BD se llamara "Chats"
+        val keyId = "${refChat.push().key}"
+        val hashMap = HashMap<String,Any>()
+        hashMap["idMensaje"] = "${keyId}"
+        hashMap["tipoMensaje"] = "${tipoMensaje}"
+        hashMap["mensaje"] = "${mensaje}"
+        hashMap["emisorUid"] = "${miUid}"
+        hashMap["receptorUid"] = "${uid}"
+        hashMap["tiempo"] = tiempo //Dato tipo long
+
+        refChat.child(chatRuta)
+            .child(keyId)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                binding.etMensajeChat.setText("")//Si se eniva exitosamente el mensaje se limpia el campo de texto
+            }
+            .addOnFailureListener {e->
+                progressDialog.dismiss()
+                Toast.makeText(
+                    this,
+                    "Error al enviar mensaje: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
 }

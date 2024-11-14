@@ -1,4 +1,4 @@
-package martinez.javier.chat
+package martinez.javier.chat.Modelos
 
 //Declarar atributos del usuario
 //Objeto en el cual almacena la informacion de cada usuario que existe en la base de datos

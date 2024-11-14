@@ -6,6 +6,11 @@ import java.util.Calendar
 import java.util.Locale
 
 object Constantes {
+
+    //Para idnetificar que tipo de mensaje se envia (texto o imagen)
+    const val MENSAJE_TEXTO = "TEXTO"
+    const val MENSAJE_IMAGEN = "IMAGEN"
+
     fun obtenerTiempoD() : Long{
         return System.currentTimeMillis()
     }
@@ -16,6 +21,14 @@ object Constantes {
         calendar.timeInMillis = tiempo
 
         return android.text.format.DateFormat.format("dd/MM/yyyy", calendar).toString()
+    }
+
+    //Visualizar dia/mes/año y hora que fue enviado el mensaje
+    fun obtenerFechaHora(tiempo: Long): String{
+        val calendar = Calendar.getInstance(Locale.ENGLISH)
+        calendar.timeInMillis = tiempo
+
+        return android.text.format.DateFormat.format("dd/MM/yyyy hh:mm:a", calendar).toString()
     }
 
     fun rutaChat(receptorUid : String, emisorUid : String) : String{

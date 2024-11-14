@@ -9,15 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import martinez.javier.chat.AdaptadorUsuario
-import martinez.javier.chat.R
-import martinez.javier.chat.Usuario
+import martinez.javier.chat.Adaptadores.AdaptadorUsuario
+import martinez.javier.chat.Modelos.Usuario
 import martinez.javier.chat.databinding.FragmentUsuariosBinding
 
 
@@ -110,7 +108,7 @@ class FragmentUsuarios : Fragment() {
                 (usuarioLista as ArrayList<Usuario>).clear()
                 //Recorrido a la base de datos
                 for (ss in snapshot.children){
-                    val usuario : Usuario ?= ss.getValue(Usuario::class.java)
+                    val usuario : Usuario?= ss.getValue(Usuario::class.java)
                     //condicon para listar a todos los usuario, excepto a nosotros
                     if (!(usuario!!.uid).equals(firebaseUser)){
                         (usuarioLista as ArrayList<Usuario>).add(usuario)

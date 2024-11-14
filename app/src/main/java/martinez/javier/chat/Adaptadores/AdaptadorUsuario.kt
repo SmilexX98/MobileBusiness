@@ -1,9 +1,8 @@
-package martinez.javier.chat
+package martinez.javier.chat.Adaptadores
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -12,6 +11,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import martinez.javier.chat.Chat.ChatActivity
+import martinez.javier.chat.Modelos.Usuario
+import martinez.javier.chat.R
 
 class AdaptadorUsuario(//Implementar miembros
     //Parametros
@@ -53,7 +54,7 @@ class AdaptadorUsuario(//Implementar miembros
             //Se pasa como parametro el uid del usuario
             intent.putExtra("uid", holder.uid.text)
             //Comprobacion
-            Toast.makeText(context, "Se ha seleccionado al usuario ${holder.nombres.text}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Selecionando a: ${holder.nombres.text}", Toast.LENGTH_SHORT).show()
             context.startActivity(intent)
         }
     }

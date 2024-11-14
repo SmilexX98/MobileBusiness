@@ -18,11 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var biding : ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Fragmento por defecto
-        verFragmentoPerfil()
+        verFragmentosUsuarios()
 
         biding.bottomNV.setOnItemSelectedListener { item ->
             when (item.itemId) {

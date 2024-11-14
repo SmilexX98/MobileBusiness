@@ -43,7 +43,7 @@
             android:textColor="@color/white"/>
 
         <View
-            android:background="#ccc"
+            android:background="@color/Tinto"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
@@ -68,12 +68,12 @@
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <EditText
             android:id="@+id/et_mensaje_chat"
             android:hint="@string/et_mensaje_chat"
             android:padding="10dp"
-            android:inputType="textImeMultiLine|textCapSentences"
+            android:inputType="textMultiLine|textCapSentences"
             android:layout_toStartOf="@+id/adjuntarFAB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:backgroundTint="@color/white"
-            app:tint="@color/Tinto"/>
+            app:tint="@color/blue"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/enviarFAB"
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:backgroundTint="@color/white"
-            app:tint="@color/Tinto"/>
+            app:tint="@color/blue"/>
 
 
 
@@ -112,7 +112,7 @@
 
     <View
         android:id="@+id/View2"
-        android:background="#ccc"
+        android:background="@color/Tinto"
         android:layout_above="@id/RLMensaje"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
