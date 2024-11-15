@@ -5,6 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -12,13 +14,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import martinez.javier.chat.BuscarChat
 import martinez.javier.chat.Chat.ChatActivity
 import martinez.javier.chat.Constantes
 import martinez.javier.chat.Modelos.Chats
 import martinez.javier.chat.R
 import martinez.javier.chat.databinding.ItemChatsBinding
 
-class AdaptadorChats : RecyclerView.Adapter<AdaptadorChats.HolderChats> {
+class AdaptadorChats : RecyclerView.Adapter<AdaptadorChats.HolderChats>, Filterable {
 
     private var context : Context
     var chatArrayList : ArrayList<Chats>//Conversacion en general que tienen el emisor con los receptores
@@ -28,6 +31,7 @@ class AdaptadorChats : RecyclerView.Adapter<AdaptadorChats.HolderChats> {
     private var miUid = ""
 
     private var filtroLista : ArrayList<Chats>
+    private var filtro : BuscarChat? = null
 
 
     constructor(context: Context, chatArrayList: ArrayList<Chats>) {
@@ -156,6 +160,13 @@ class AdaptadorChats : RecyclerView.Adapter<AdaptadorChats.HolderChats> {
         var tvNombres = binding.tvNombres
         var tvUltimoMensaje = binding.tvUltimoMensaje
         var tvFecha = binding.tvFecha
+    }
+
+    override fun getFilter(): Filter {
+        if (filtro == null){
+            filtro = BuscarChat(this, filtroLista)
+        }
+        return filtro!!
     }
 
 }
