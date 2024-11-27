@@ -148,12 +148,15 @@ class ChatActivity : AppCompatActivity() {
                     //Obtener informacion del usuario
                     val nombres = "${snapshot.child("nombres").value}"
                     val imagen ="${snapshot.child("imagen").value}"
+                    val estado = "${snapshot.child("estado").value}"
 
+                    //Poner informacion dentro de la vista Nueva
+                    binding.txtEstadoChat.text = estado
                     //Poner informacion dentro de la vista
                     binding.txtNombreUsuario.text=nombres
 
                     try {
-                        Glide.with(this@ChatActivity)
+                        Glide.with(applicationContext)
                             .load(imagen)//Cargar imagen de firebase
                             .placeholder(R.drawable.perfil_usuario)
                             .into(binding.toolbarIv)
@@ -270,5 +273,32 @@ class ChatActivity : AppCompatActivity() {
                 ).show()
             }
     }
+
+    private fun actualizarEstado(estado : String){
+        //Referencia a la BD "Usuarios" y el uid del usuario actual
+        val ref = FirebaseDatabase.getInstance().reference.child("Usuarios").child(firebaseAuth.uid!!)
+        val hashMap = HashMap<String, Any>()
+        hashMap["estado"]=estado
+        ref!!.updateChildren(hashMap)
+    }
+    //Si se esta dentro de la app = ONLINE
+    override fun onResume() {
+        super.onResume()
+        if (firebaseAuth.currentUser!=null){
+            actualizarEstado("Online")
+        }
+
+    }
+    //Si se esta fuera de la app = OFFLINE
+    override fun onPause() {
+        super.onPause()
+        if (firebaseAuth.currentUser!=null){
+            actualizarEstado("Offline")
+        }
+
+    }
+
+
+
 
 }

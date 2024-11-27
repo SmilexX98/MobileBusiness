@@ -68,6 +68,8 @@ dependencies {
 
     implementation(libs.firebase.storage)
 
+    implementation(libs.photoView)
+
 
 
    //SE NECESITAN SI SE USA LA FORMA ANTIGUA EN PLUGINS A NIVEL MODULE (ARRIBA) Y PLUGINS A NIVEL PROJECT

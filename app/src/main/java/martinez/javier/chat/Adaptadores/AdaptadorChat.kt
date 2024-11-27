@@ -1,5 +1,6 @@
 package martinez.javier.chat.Adaptadores
 
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.github.chrisbanes.photoview.PhotoView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -102,13 +105,32 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
             //Comprobar quien si uno fue quien envio la imagen
             if (modeloChat.emisorUid.equals(firebaseAuth.uid)){
                 holder.itemView.setOnClickListener {
-                    val opciones = arrayOf<CharSequence>("Eliminar","Cancelar")
+                    val opciones = arrayOf<CharSequence>("Eliminar", "Ver", "Cancelar")
                     val builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
                     builder.setTitle("¿Que hacer?")
                     builder.setItems(opciones, DialogInterface.OnClickListener { dialog, which ->
                         if (which == 0){
                             //Seleccion eliminar msj (imagen)
                             eliminarMensaje(position,holder,modeloChat)
+                        }else if (which == 1){
+                            //Seleccion ver msj (imagen)
+                            visualizadorImg(modeloChat.mensaje)//el msj contiene url de la imagen
+                            //Pero solo si uno envia los mensajes, en esta parte
+                        }
+                    })
+                    builder.show()
+                }
+            }
+            //Para ver la imagen que se nos envia
+            else if (!modeloChat.emisorUid.equals(firebaseAuth.uid)){
+                holder.itemView.setOnClickListener {
+                    val opciones = arrayOf<CharSequence>("Ver", "Cancelar")
+                    val builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("¿Que hacer?")
+                    builder.setItems(opciones, DialogInterface.OnClickListener { dialog, which ->
+                        if (which == 0){
+                            //Ver imagen
+                            visualizadorImg(modeloChat.mensaje)
                         }
                     })
                     builder.show()
@@ -138,6 +160,32 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+    }
+
+    private fun visualizadorImg(imagen : String){
+        val Pv :PhotoView
+        val btnCerrar : MaterialButton
+        val dialog = Dialog(context)
+        //Conexion del adapatdor con el diseño "visualizador_img)
+        dialog.setContentView(R.layout.visualizador_img)
+        //Inicializar las vistas
+        Pv = dialog.findViewById(R.id.PV_img)
+        btnCerrar = dialog.findViewById(R.id.btn_cerrarVisualizador)
+        //Mostrar la imagen
+        try {
+            Glide.with(context)
+                .load(imagen)
+                .placeholder(R.drawable.imagen_enviada)
+                .into(Pv)
+        }catch (e:Exception){
+
+        }
+        btnCerrar.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+        dialog.setCanceledOnTouchOutside(false)
+
     }
 
     override fun getItemViewType(position: Int): Int {

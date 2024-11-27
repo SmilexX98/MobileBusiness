@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import martinez.javier.chat.Fragmentos.FragmentChats
 import martinez.javier.chat.Fragmentos.FragmentPerfil
 import martinez.javier.chat.Fragmentos.FragmentUsuarios
@@ -99,5 +100,29 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    //Funcion para actualizar estado "Online" u "Offline
+    private fun actualizarEstado(estado : String){
+        //Referencia a la BD "Usuarios" y el uid del usuario actual
+        val ref = FirebaseDatabase.getInstance().reference.child("Usuarios").child(firebaseAuth.uid!!)
+        val hashMap = HashMap<String,Any>()
+        hashMap["estado"] = estado
+        ref!!.updateChildren(hashMap)
+    }
+    //Si se esta dentro de la app = ONLINE
+    override fun onResume() {
+        super.onResume()
+        if (firebaseAuth.currentUser!=null){
+            actualizarEstado("Online")
+        }
+
+    }
+    //Si se esta fuera de la app = OFFLINE
+    override fun onPause() {
+        super.onPause()
+        if (firebaseAuth.currentUser!=null){
+            actualizarEstado("Offline")
+        }
+
+    }
 
 }

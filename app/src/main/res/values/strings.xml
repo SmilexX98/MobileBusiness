@@ -62,6 +62,7 @@
     <string name="et_buscar_usuario">Buscar usuario</string>
 
     <string name="txt_nombre_usuario">Nombres</string>
+
     <string name="et_mensaje_chat">Escriba algo...</string>
     <string name="tv_tiempo_mensaje">dd/MM/yyyy hh:mm</string>
 
@@ -74,6 +75,10 @@
     <string name="Mobile_Business">Mobile Business</string>
     <string name="et_buscar">Buscar</string>
     <string name="tvFecha">dd/MM/yyyy</string>
+    
+    <string name="btn_cerrarVisualizador">Cerrar</string>
+    <string name="txt_estado_chat">Online</string>
+
 
 
 </resources>

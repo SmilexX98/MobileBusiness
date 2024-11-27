@@ -3,6 +3,7 @@ package martinez.javier.chat.Fragmentos
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,10 +59,35 @@ class FragmentPerfil : Fragment() {
         }
 
         binding.btnCerrarsesion.setOnClickListener {
-            firebaseAuth.signOut() //Cerrar sesion
+           /* firebaseAuth.signOut() //Cerrar sesion
             startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
-            activity?.finishAffinity()
+            activity?.finishAffinity() */
+            actualizarEstado()
+            cerrarSesion()
         }
+    }
+
+    private fun cerrarSesion() {
+        object : CountDownTimer(3000,1000){
+            override fun onTick(p0: Long) {
+
+            }
+
+            override fun onFinish() {
+                //Despues de 10 segundos se cerrara la sesion, se ejecuta lo siguiente
+                firebaseAuth.signOut() //Cerrar sesion
+                startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
+                activity?.finishAffinity()
+            }
+
+        }.start()
+    }
+
+    private fun actualizarEstado(){
+        val ref = FirebaseDatabase.getInstance().reference.child("Usuarios").child(firebaseAuth.uid!!)
+        val hashMap = HashMap<String,Any>()
+        hashMap["estado"] = "Offline"
+        ref!!.updateChildren(hashMap)
     }
 
     private fun cargarInformacion() {
@@ -90,7 +116,7 @@ class FragmentPerfil : Fragment() {
 
                     //Poner la imagen en el ImageView (Iv)
                     try {
-                        Glide.with(mContext)
+                        Glide.with(mContext.applicationContext)
                             .load(imagen)
                             .placeholder(R.drawable.ic_img_perfil)//Se muestra esta imagen mientras se carga la otra (Servidor)
                             .into(binding.ivPerfil)
