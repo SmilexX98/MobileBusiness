@@ -1,14 +1,18 @@
 package martinez.javier.chat.Adaptadores
 
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import martinez.javier.chat.Constantes
 import martinez.javier.chat.Modelos.Chat
 import martinez.javier.chat.R
@@ -18,6 +22,7 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
     private val context : Context
     private val charArray : ArrayList<Chat>
     private val firebaseAuth : FirebaseAuth
+    private var chatRuta = ""
 
     companion object{
         private const val MENSAJE_IZQUIERDA = 0 //Referencia a los mensaje recibidos
@@ -54,12 +59,34 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
 
         val formato_fecha_hora = Constantes.obtenerFechaHora(tiempo)
         holder.tv_tiempo_mensaje.text = formato_fecha_hora
+
+        /*MENSAJES TIPO TXT*/
         //Si el tipo de mensaje es texto
         if (tipoMensaje == Constantes.MENSAJE_TEXTO){
             holder.tv_mensaje.visibility = View.VISIBLE
             holder.Iv_mensaje.visibility = View.GONE//Si no es tipo texto se oculta la imagen (ImageView)
             holder.tv_mensaje.text = mensaje//Mostrar mensaje
-        }else{//Mensaje tipo imagen
+
+            //Compra cuales mensajes enviamos y cuales recibiedno
+            if (modeloChat.emisorUid.equals(firebaseAuth.uid)){//Si el emisor es igual al actual = nosotoos enviamos msj
+                holder.itemView.setOnClickListener {
+                    val opciones = arrayOf<CharSequence>("Eliminar","Cancelar")
+                    val builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("¿Que hacer?")
+                    builder.setItems(opciones, DialogInterface.OnClickListener { dialog, which ->
+                        if (which == 0){
+                            //Seleccion eliminar msj
+                            eliminarMensaje(position,holder,modeloChat)
+                        }
+                    })
+                    builder.show()
+                }
+            }
+
+
+        }
+        /*MENSAJES TIPO IMG*/
+        else{//Mensaje tipo imagen
             holder.tv_mensaje.visibility = View.GONE
             holder.Iv_mensaje.visibility = View.VISIBLE
 
@@ -72,8 +99,45 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
             }catch (e:Exception){
 
             }
+            //Comprobar quien si uno fue quien envio la imagen
+            if (modeloChat.emisorUid.equals(firebaseAuth.uid)){
+                holder.itemView.setOnClickListener {
+                    val opciones = arrayOf<CharSequence>("Eliminar","Cancelar")
+                    val builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("¿Que hacer?")
+                    builder.setItems(opciones, DialogInterface.OnClickListener { dialog, which ->
+                        if (which == 0){
+                            //Seleccion eliminar msj (imagen)
+                            eliminarMensaje(position,holder,modeloChat)
+                        }
+                    })
+                    builder.show()
+                }
+            }
         }
 
+    }
+
+    private fun eliminarMensaje(position: Int, holder: AdaptadorChat.HolderChat, modeloChat: Chat) {
+        //Obteniendo ruta para podder ubicar los mensajes
+        chatRuta = Constantes.rutaChat(modeloChat.receptorUid, modeloChat.emisorUid)
+        val ref = FirebaseDatabase.getInstance().reference.child("Chats")//Referencia a la BD de los "Chats"
+        ref.child(chatRuta).child(charArray.get(position).idMensaje)
+            .removeValue()
+            .addOnSuccessListener {
+                Toast.makeText(
+                    holder.itemView.context,
+                    "Mensaje eliminado",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .addOnFailureListener {e->
+                Toast.makeText(
+                    holder.itemView.context,
+                    "Mensaje NO eliminado debido a ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -94,7 +158,4 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
         var Iv_mensaje : ShapeableImageView = itemView.findViewById(R.id.Iv_mensaje)
         var tv_tiempo_mensaje : TextView = itemView.findViewById(R.id.tv_tiempo_mensaje)
     }
-
-
-
 }
