@@ -10,7 +10,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import martinez.javier.chat.Chat.ChatActivity
 import martinez.javier.chat.R
-import kotlin.random.Random
 
 class MyFcmService : FirebaseMessagingService() {
 
@@ -44,7 +43,7 @@ class MyFcmService : FirebaseMessagingService() {
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.chat_notification)
+            .setSmallIcon(R.drawable.notification)
             .setContentTitle(title ?: "Sin titulo")
             .setContentText(body ?: "Sin contenido")
             .setAutoCancel(true)
