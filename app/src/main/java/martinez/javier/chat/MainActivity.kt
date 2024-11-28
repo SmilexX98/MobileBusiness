@@ -1,13 +1,19 @@
 package martinez.javier.chat
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import martinez.javier.chat.Fragmentos.FragmentChats
 import martinez.javier.chat.Fragmentos.FragmentPerfil
 import martinez.javier.chat.Fragmentos.FragmentUsuarios
@@ -28,12 +34,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(biding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        //Comprobar si el usuario esta logueado o sea igual null
-        //Si el usuario no esta logueado, no va aceder al mainactivitu
-        //Sino que lo va a dirigir a OpcionesLoginActivity
-        if (firebaseAuth.currentUser == null){
-            irOpcionesLogin()
-        }
+
+        comprobarSesion()
 
         //Fragmento por defecto
         verFragmentosUsuarios()
@@ -68,9 +70,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
     //Permite redirigir e3l mqinqdtivity hacia la actividad de login en el caso de que el usuario sea igual a null
-    private fun irOpcionesLogin() {
-        startActivity(Intent(applicationContext, OpcionesLoginActivity::class.java))
-        finishAffinity() //La actividad maainactivity se cierra
+    //Comprobar si el usuario esta logueado o sea igual null
+    //Si el usuario no esta logueado, no va aceder al mainactivitu
+    //Sino que lo va a dirigir a OpcionesLoginActivity
+    private fun comprobarSesion() {
+        //Si el usuario no esta logueado, no va aceder al mainactivitu, va a "OpcionesLoginActivity"
+        if (firebaseAuth.currentUser == null){
+            startActivity(Intent(applicationContext, OpcionesLoginActivity::class.java))
+            finishAffinity() //La actividad maainactivity se cierra
+        //Pero si el usuario esta conectado se agregara automaticamente el token
+        }else{
+            agregarToken()
+            solicitarNotificacion()
+        }
+
     }
 
     private fun verFragmentoPerfil(){
@@ -124,5 +137,55 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+    //Obtener token cuando esteme en el apartado principal
+    private fun agregarToken(){
+        val miUid = "${firebaseAuth.uid}"
+        FirebaseMessaging.getInstance().token
+            .addOnSuccessListener { fcmToken->
+                //Hashmap para poder actualiza en tiempo real el nuevo dato en el usuario actual
+                val hashMap = HashMap<String,Any>()
+                hashMap["fcmToken"] = "${fcmToken}"
+                //Referencia a la BD
+                val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
+                ref.child(miUid)
+                    .updateChildren(hashMap)
+                    //EL token se agrego correctamente
+                    .addOnSuccessListener {
+
+                    }
+                    .addOnFailureListener {e->
+                        Toast.makeText(this,
+                            "${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+
+            }
+            .addOnFailureListener {e->
+                Toast.makeText(this,
+                    "${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+    }
+
+    private fun solicitarNotificacion(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            //Si el permiso en primera instancia es denegado, o sea el USUARIO abre la aplicacion por primera vez
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) ==
+                        PackageManager.PERMISSION_DENIED){
+                darPermiso.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+
+            }
+
+        }
+
+    }
+    private val darPermiso =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){esConcedido->
+            //El permiso fue aceptado
+        }
 
 }

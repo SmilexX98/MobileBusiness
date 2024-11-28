@@ -13,7 +13,20 @@
           "package_name": "martinez.javier.chat"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "669330987916-e3rrkefb0gmmha4q4t6upc2gheii380r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "martinez.javier.chat",
+            "certificate_hash": "704cc256404e0a1174f09ee2270abcda64cf54e6"
+          }
+        },
+        {
+          "client_id": "669330987916-jagdjbqphnmn3h07gq633oeofaapum96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCtS2n8e3SIBpNBio2A13NiVnYdSWs7Cbc"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669330987916-jagdjbqphnmn3h07gq633oeofaapum96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

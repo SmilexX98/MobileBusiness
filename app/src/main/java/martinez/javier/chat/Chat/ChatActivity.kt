@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,18 +14,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import martinez.javier.chat.Adaptadores.AdaptadorChat
 import martinez.javier.chat.Constantes
 import martinez.javier.chat.Modelos.Chat
 import martinez.javier.chat.R
 import martinez.javier.chat.databinding.ActivityChatBinding
+import org.json.JSONObject
 
 class ChatActivity : AppCompatActivity() {
 
@@ -39,6 +48,9 @@ class ChatActivity : AppCompatActivity() {
     private var chatRuta = ""
     //Se almacenara la imagen selecionada por el usuario de la galeria
     private var imagenUri : Uri?= null
+
+    private var miNombre = ""
+    private var recibimosToken = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +70,8 @@ class ChatActivity : AppCompatActivity() {
 
         miUid = firebaseAuth.uid!!
         chatRuta = Constantes.rutaChat(uid, miUid)
+
+        cargarMiInfo()
 
         binding.adjuntarFAB.setOnClickListener {
             //Verificar version android
@@ -87,6 +101,20 @@ class ChatActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    private fun cargarMiInfo(){
+        val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
+        ref.child("${firebaseAuth.uid}")
+            .addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    miNombre = "${snapshot.child("nombres").value}"
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 
     private fun cargarMensaje() {
@@ -149,6 +177,7 @@ class ChatActivity : AppCompatActivity() {
                     val nombres = "${snapshot.child("nombres").value}"
                     val imagen ="${snapshot.child("imagen").value}"
                     val estado = "${snapshot.child("estado").value}"
+                    recibimosToken = "${snapshot.child("fcmToken").value}"
 
                     //Poner informacion dentro de la vista Nueva
                     binding.txtEstadoChat.text = estado
@@ -263,6 +292,12 @@ class ChatActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 progressDialog.dismiss()
                 binding.etMensajeChat.setText("")//Si se eniva exitosamente el mensaje se limpia el campo de texto
+
+                if (tipoMensaje == Constantes.MENSAJE_TEXTO){
+                    prepararNotificacion(mensaje)
+                }else{
+                    prepararNotificacion("Imagen enviada")
+                }
             }
             .addOnFailureListener {e->
                 progressDialog.dismiss()
@@ -272,6 +307,78 @@ class ChatActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+    }
+
+    private fun obtenerAccessToken() : String?{
+        return try {
+            val servicioCuenta = applicationContext.assets.open("service-account.json")
+
+            val googleCredentials = GoogleCredentials.fromStream(servicioCuenta)
+                .createScoped(listOf("https://www.googleapis.com/auth/firebase.messaging"))
+
+            googleCredentials.refreshIfExpired()
+            googleCredentials.accessToken.tokenValue
+        }catch (e:Exception){
+            null
+        }
+    }
+
+    private fun prepararNotificacion(mensaje: String){
+        val notificationJo = JSONObject()
+        val messageJo = JSONObject()
+        val notificationPayload = JSONObject()
+        val messageData = JSONObject()
+
+        try {
+            notificationPayload.put("title", "Nuevo mensaje")
+            notificationPayload.put("body", mensaje)
+
+            messageData.put("notificationType", "nuevo_mensaje")
+            messageData.put("senderUid", firebaseAuth.uid)
+
+            messageJo.put("token", recibimosToken)
+            messageJo.put("notificaton", notificationPayload)
+            messageJo.put("data", messageData)
+            notificationJo.put("message", messageJo)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+        enviarNotificacion(notificationJo)
+
+    }
+
+    private fun enviarNotificacion(notificationJo: JSONObject) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val url = "https://fcm.googleapis.com/v1/projects/mobilebusiness-51055/messages:send"
+            val accesToken = obtenerAccessToken()
+            if (accesToken!=null){
+                withContext(Dispatchers.Main){
+                    val JsonObjectRequest : JsonObjectRequest = object : JsonObjectRequest(
+                        Method.POST,
+                        url,
+                        notificationJo,
+                        com.android.volley.Response.Listener {
+                            //Solicitud exitosa
+                        },
+                        com.android.volley.Response.ErrorListener {
+                            //Solicitod fallida
+                        }
+                    ){
+                        override fun getHeaders(): MutableMap<String, String> {
+                            val headers = HashMap<String, String>()
+                            headers["Content-Type"] = "application/json"
+                            headers["Authorization"] = "Bearer $accesToken"
+                            return headers
+                        }
+                    }
+                    Volley.newRequestQueue(this@ChatActivity).add(JsonObjectRequest)
+
+                }
+            }else{
+                Log.e("Error", "Error al obtener el token")
+            }
+        }
+
     }
 
     private fun actualizarEstado(estado : String){

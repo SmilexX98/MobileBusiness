@@ -35,6 +35,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    packagingOptions{
+        exclude("META-INF/DEPENDENCIES")
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -69,6 +74,14 @@ dependencies {
     implementation(libs.firebase.storage)
 
     implementation(libs.photoView)
+
+    implementation(libs.messaging)
+    //implementation ("com.google.firebase:firebase-messaging-ktx:23.3.1")
+
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
+    implementation("com.google.api-client:google-api-client:1.33.0")
+    implementation("com.android.volley:volley:1.2.1")
+
 
 
 
