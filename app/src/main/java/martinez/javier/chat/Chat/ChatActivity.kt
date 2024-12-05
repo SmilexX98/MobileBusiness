@@ -68,7 +68,7 @@ class ChatActivity : AppCompatActivity() {
         miUid = firebaseAuth.uid!!
         chatRuta = Constantes.rutaChat(uid, miUid)
 
-        //cargarMiInfo()
+        cargarMiInfo()
 
         binding.adjuntarFAB.setOnClickListener {
             //Verificar version android
@@ -361,64 +361,6 @@ class ChatActivity : AppCompatActivity() {
             actualizarEstado("Offline")
         }
     }
-/*
-    private fun prepararNotificacion(mensaje: String){
-        val notificationJo = JSONObject()
-        val messageJo = JSONObject()
-        val notificationPayload = JSONObject()
-        val messageData = JSONObject()
 
-        try {
-            notificationPayload.put("title", "Nuevo mensaje")
-            notificationPayload.put("body", mensaje)
-
-            messageData.put("notificationType", "nuevo_mensaje")
-            messageData.put("senderUid", firebaseAuth.uid)
-
-            messageJo.put("token", recibimosToken)
-            messageJo.put("notificaton", notificationPayload)
-            messageJo.put("data", messageData)
-            notificationJo.put("message", messageJo)
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
-        enviarNotificacion(notificationJo)
-
-    }
-
-    private fun enviarNotificacion(notificationJo: JSONObject) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val url = "https://fcm.googleapis.com/v1/projects/mobilebusiness-51055/messages:send"
-            val accesToken = obtenerAccessToken()
-            if (accesToken!=null){
-                withContext(Dispatchers.Main){
-                    val JsonObjectRequest : JsonObjectRequest = object : JsonObjectRequest(
-                        Method.POST,
-                        url,
-                        notificationJo,
-                        com.android.volley.Response.Listener {
-                            //Solicitud exitosa
-                        },
-                        com.android.volley.Response.ErrorListener {
-                            //Solicitod fallida
-                        }
-                    ){
-                        override fun getHeaders(): MutableMap<String, String> {
-                            val headers = HashMap<String, String>()
-                            headers["Content-Type"] = "application/json"
-                            headers["Authorization"] = "Bearer $accesToken"
-                            return headers
-                        }
-                    }
-                    Volley.newRequestQueue(this@ChatActivity).add(JsonObjectRequest)
-
-                }
-            }else{
-                Log.e("Error", "Error al obtener el token")
-            }
-        }
-
-    }
-*/
 
 }
