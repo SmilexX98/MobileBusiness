@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -20,11 +23,16 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import martinez.javier.chat.Adaptadores.AdaptadorChat
 import martinez.javier.chat.Constantes
 import martinez.javier.chat.Modelos.Chat
 import martinez.javier.chat.R
 import martinez.javier.chat.databinding.ActivityChatBinding
+import org.json.JSONObject
 
 class ChatActivity : AppCompatActivity() {
 
@@ -303,7 +311,7 @@ class ChatActivity : AppCompatActivity() {
                     prepararNotificacion(mensaje)
                 }else{
                     prepararNotificacion("Imagen enviada")
-                } */
+                }*/
             }
             .addOnFailureListener {e->
                 progressDialog.dismiss()
@@ -353,6 +361,64 @@ class ChatActivity : AppCompatActivity() {
             actualizarEstado("Offline")
         }
     }
+/*
+    private fun prepararNotificacion(mensaje: String){
+        val notificationJo = JSONObject()
+        val messageJo = JSONObject()
+        val notificationPayload = JSONObject()
+        val messageData = JSONObject()
 
+        try {
+            notificationPayload.put("title", "Nuevo mensaje")
+            notificationPayload.put("body", mensaje)
+
+            messageData.put("notificationType", "nuevo_mensaje")
+            messageData.put("senderUid", firebaseAuth.uid)
+
+            messageJo.put("token", recibimosToken)
+            messageJo.put("notificaton", notificationPayload)
+            messageJo.put("data", messageData)
+            notificationJo.put("message", messageJo)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+        enviarNotificacion(notificationJo)
+
+    }
+
+    private fun enviarNotificacion(notificationJo: JSONObject) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val url = "https://fcm.googleapis.com/v1/projects/mobilebusiness-51055/messages:send"
+            val accesToken = obtenerAccessToken()
+            if (accesToken!=null){
+                withContext(Dispatchers.Main){
+                    val JsonObjectRequest : JsonObjectRequest = object : JsonObjectRequest(
+                        Method.POST,
+                        url,
+                        notificationJo,
+                        com.android.volley.Response.Listener {
+                            //Solicitud exitosa
+                        },
+                        com.android.volley.Response.ErrorListener {
+                            //Solicitod fallida
+                        }
+                    ){
+                        override fun getHeaders(): MutableMap<String, String> {
+                            val headers = HashMap<String, String>()
+                            headers["Content-Type"] = "application/json"
+                            headers["Authorization"] = "Bearer $accesToken"
+                            return headers
+                        }
+                    }
+                    Volley.newRequestQueue(this@ChatActivity).add(JsonObjectRequest)
+
+                }
+            }else{
+                Log.e("Error", "Error al obtener el token")
+            }
+        }
+
+    }
+*/
 
 }
