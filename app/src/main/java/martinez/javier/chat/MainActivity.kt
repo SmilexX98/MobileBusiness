@@ -12,7 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import martinez.javier.chat.Fragmentos.FragmentChats
 import martinez.javier.chat.Fragmentos.FragmentPerfil
@@ -105,5 +108,46 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(binding.fragmentoFL.id, fragment, "Fragment Chats")
         fragmentTransaction.commit()
     }
+
+    // Funcion para actualizar estado "Online" u "Offline"
+    private fun actualizarEstado(estado: String) {
+        val uid = firebaseAuth.uid ?: return
+        val refUsuarios = FirebaseDatabase.getInstance().getReference("Usuarios")
+        val refNoUsuarios = FirebaseDatabase.getInstance().getReference("NoUsuarios")
+        val hashMap = HashMap<String, Any>()
+        hashMap["estado"] = estado
+
+        refUsuarios.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    refUsuarios.child(uid).updateChildren(hashMap)
+                } else {
+                    refNoUsuarios.child(uid).updateChildren(hashMap)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Manejo del error si es necesario
+            }
+        })
+    }
+
+    // Si se esta dentro de la app = ONLINE
+    override fun onResume() {
+        super.onResume()
+        if (firebaseAuth.currentUser != null) {
+            actualizarEstado("Online")
+        }
+    }
+
+    // Si se esta fuera de la app = OFFLINE
+    override fun onPause() {
+        super.onPause()
+        if (firebaseAuth.currentUser != null) {
+            actualizarEstado("Offline")
+        }
+    }
+
+
 
 }
