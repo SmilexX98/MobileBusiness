@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".Chat.ChatActivity"
             android:exported="false" />
         <activity
@@ -48,13 +51,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".Notificaciones.MyFcmService"
+        <service
+            android:name=".Notificaciones.MyFcmService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

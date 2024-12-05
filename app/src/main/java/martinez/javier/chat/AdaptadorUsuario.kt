@@ -47,16 +47,16 @@ class AdaptadorUsuario(//Implementar miembros
         holder.nombres.text = usuario.nombres
         Glide.with(context).load(usuario.imagen).placeholder(R.drawable.ic_imagen_perfil).into(holder.imagen)
 
-     /*   //Para al sleccionar un usuario se vaya a chat
+        //Para al sleccionar un usuario se vaya a chat
         holder.itemView.setOnClickListener {
             //item que permite dirigir de este adaptador a chatActivity
-            val intent = Intent(context, ChatAct::class.java)
+            val intent = Intent(context, ChatActivity::class.java)
             //Se pasa como parametro el uid del usuario
             intent.putExtra("uid", holder.uid.text)
             //Comprobacion
             Toast.makeText(context, "Selecionando a: ${holder.nombres.text}", Toast.LENGTH_SHORT).show()
             context.startActivity(intent)
-        } */
+        }
     }
 
     class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){

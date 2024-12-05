@@ -75,7 +75,7 @@
     <string name="Mobile_Business">Mobile Business</string>
     <string name="et_buscar">Buscar</string>
     <string name="tvFecha">dd/MM/yyyy</string>
-    
+
     <string name="btn_cerrarVisualizador">Cerrar</string>
     <string name="txt_estado_chat">Online</string>
     <string name="checkBox_Vendedor">Vendedor?</string>
