@@ -40,8 +40,8 @@ class ChatActivity : AppCompatActivity() {
     //Se almacenara la imagen selecionada por el usuario de la galeria
     private var imagenUri : Uri?= null
 
-    //private var miNombre = ""
-    //private var recibimosToken = ""
+    private var miNombre = ""
+    private var recibimosToken = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +92,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun cargarMiInfo(){
+    private fun cargarMiInfo(){
         val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
         ref.child("${firebaseAuth.uid}")
             .addValueEventListener(object : ValueEventListener {
@@ -104,7 +104,7 @@ class ChatActivity : AppCompatActivity() {
                     TODO("Not yet implemented")
                 }
             })
-    }*/
+    }
 
     private fun cargarMensaje() {
         //Iniciar el arraylist
@@ -192,7 +192,7 @@ class ChatActivity : AppCompatActivity() {
         val nombres = "${snapshot.child("nombres").value}"
         val imagen = "${snapshot.child("imagen").value}"
         val estado = "${snapshot.child("estado").value}"
-        // recibimosToken = "${snapshot.child("fcmToken").value}"
+        recibimosToken = "${snapshot.child("fcmToken").value}"
 
         // Poner información dentro de la vista Nueva
         binding.txtEstadoChat.text = estado
