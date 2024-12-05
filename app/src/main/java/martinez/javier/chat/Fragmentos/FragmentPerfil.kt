@@ -56,10 +56,24 @@ class FragmentPerfil : Fragment() {
         }
 
         binding.btnCerrarsesion.setOnClickListener {
-            firebaseAuth.signOut() //Cerrar sesión
-            startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
-            activity?.finishAffinity()
+            cerrarSesion()
         }
+    }
+
+    private fun cerrarSesion() {
+        object : CountDownTimer(3000,1000){
+            override fun onTick(p0: Long) {
+
+            }
+
+            override fun onFinish() {
+                //Despues de 3 segundos se cerrara la sesion, se ejecuta lo siguiente
+                firebaseAuth.signOut() //Cerrar sesion
+                startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
+                activity?.finishAffinity()
+            }
+
+        }.start()
     }
 
     private fun cargarInformacion() {
