@@ -1,4 +1,4 @@
-package martinez.javier.chat
+package martinez.javier.chat.Adaptadores
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-//import martinez.javier.chat.Chat.ChatActivity
-//import martinez.javier.chat.Modelos.Usuario
+import martinez.javier.chat.Chat.ChatActivity
+import martinez.javier.chat.Modelos.Usuario
 import martinez.javier.chat.R
+
+//import martinez.javier.chat.Modelos.Chat.ChatActivity
+//import martinez.javier.chat.Modelos.Usuario
 
 class AdaptadorUsuario(//Implementar miembros
     //Parametros

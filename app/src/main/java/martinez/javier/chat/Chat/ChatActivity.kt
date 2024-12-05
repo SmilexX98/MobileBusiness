@@ -1,4 +1,4 @@
-package martinez.javier.chat
+package martinez.javier.chat.Chat
 
 import android.app.Activity
 import android.app.ProgressDialog
@@ -6,30 +6,24 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import martinez.javier.chat.Adaptadores.AdaptadorChat
+import martinez.javier.chat.Constantes
+import martinez.javier.chat.Modelos.Chat
+import martinez.javier.chat.R
 import martinez.javier.chat.databinding.ActivityChatBinding
-import org.json.JSONObject
 
 class ChatActivity : AppCompatActivity() {
 
@@ -88,7 +82,7 @@ class ChatActivity : AppCompatActivity() {
 
         //Llamar funcion */
         cargarInfo()
-        //cargarMensaje()
+        cargarMensaje()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -111,9 +105,9 @@ class ChatActivity : AppCompatActivity() {
             })
     }*/
 
-    /*private fun cargarMensaje() {
+    private fun cargarMensaje() {
         //Iniciar el arraylist
-        val mensajesArrayList = ArrayList<ChatActivity>()
+        val mensajesArrayList = ArrayList<Chat>()
         //Referencia a la BD de los chats
         val ref = FirebaseDatabase.getInstance().getReference("Chats")
         ref.child(chatRuta)
@@ -125,20 +119,20 @@ class ChatActivity : AppCompatActivity() {
                     for (ds : DataSnapshot in snapshot.children){
                         try {
                             //Preparar modeo chat para recuperar toda la informacion
-                            val chat = ds.getValue(ChatActivity::class.java)
+                            val chat = ds.getValue(Chat::class.java)
                             mensajesArrayList.add(chat!!)
 
                         }catch (e:Exception){
 
                         }
                     }
-                    /*val adaptadorChat = AdaptadorChat(this@ChatActivity, mensajesArrayList)
+                    val adaptadorChat = AdaptadorChat(this@ChatActivity, mensajesArrayList)
                     binding.chatsRV.adapter = adaptadorChat
                     //Configuracion para ver los mensajes dede la parte inferior
-                    binding.chatsRV.setHasFixedSize(true)
+                    /*binding.chatsRV.setHasFixedSize(true)
                     var linearLayoutManager = LinearLayoutManager(this@ChatActivity)
                     linearLayoutManager.stackFromEnd = true
-                    binding.chatsRV.layoutManager = linearLayoutManager */
+                    binding.chatsRV.layoutManager = linearLayoutManager*/
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -147,19 +141,6 @@ class ChatActivity : AppCompatActivity() {
             })
     }
 
-    private fun validarMensaje() {
-        val mensaje = binding.etMensajeChat.text.toString().trim()
-        val tiempo = Constantes.obtenerTiempoD()
-        if (mensaje.isEmpty()){
-            Toast.makeText(
-                this,
-                "Ingrese mensaje",
-                Toast.LENGTH_SHORT
-            ).show()
-        }else{
-            enviarMensaje(Constantes.MENSAJE_TEXTO, mensaje, tiempo)//Tipo de mensaje, mensaje(TEXTO) y tiempo
-        }
-    }*/
 
     private fun validarMensaje() {
         val mensaje = binding.etMensajeChat.text.toString().trim()

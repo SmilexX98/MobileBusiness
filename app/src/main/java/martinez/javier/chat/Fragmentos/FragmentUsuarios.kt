@@ -14,9 +14,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import martinez.javier.chat.AdaptadorUsuario
-import martinez.javier.chat.R
-import martinez.javier.chat.Usuario
+import martinez.javier.chat.Adaptadores.AdaptadorUsuario
+import martinez.javier.chat.Modelos.Usuario
 import martinez.javier.chat.databinding.FragmentUsuariosBinding
 
 class FragmentUsuarios : Fragment() {
