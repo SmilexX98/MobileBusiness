@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -129,10 +130,10 @@ class ChatActivity : AppCompatActivity() {
                     val adaptadorChat = AdaptadorChat(this@ChatActivity, mensajesArrayList)
                     binding.chatsRV.adapter = adaptadorChat
                     //Configuracion para ver los mensajes dede la parte inferior
-                    /*binding.chatsRV.setHasFixedSize(true)
+                    binding.chatsRV.setHasFixedSize(true)
                     var linearLayoutManager = LinearLayoutManager(this@ChatActivity)
                     linearLayoutManager.stackFromEnd = true
-                    binding.chatsRV.layoutManager = linearLayoutManager*/
+                    binding.chatsRV.layoutManager = linearLayoutManager
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -157,38 +158,57 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    private fun cargarInfo(){
-        //Referencia a la BD
-        val ref = FirebaseDatabase.getInstance().getReference("Usuarios")
-        ref.child(uid)//Pasar el uid del emisor
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    //Obtener informacion del usuario
-                    val nombres = "${snapshot.child("nombres").value}"
-                    val imagen ="${snapshot.child("imagen").value}"
-                    val estado = "${snapshot.child("estado").value}"
-                    //recibimosToken = "${snapshot.child("fcmToken").value}"
+    private fun cargarInfo() {
+        val refUsuarios = FirebaseDatabase.getInstance().getReference("Usuarios")
+        val refNoUsuarios = FirebaseDatabase.getInstance().getReference("NoUsuarios")
 
-                    //Poner informacion dentro de la vista Nueva
-                    binding.txtEstadoChat.text = estado
-                    //Poner informacion dentro de la vista
-                    binding.txtNombreUsuario.text=nombres
+        refUsuarios.child(uid).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    mostrarInfoUsuario(snapshot)
+                } else {
+                    refNoUsuarios.child(uid).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                mostrarInfoUsuario(snapshot)
+                            }
+                        }
 
-                    try {
-                        Glide.with(applicationContext)
-                            .load(imagen)//Cargar imagen de firebase
-                            .placeholder(R.drawable.perfil_usuario)
-                            .into(binding.toolbarIv)
-                    }catch (e:Exception){
-
-                    }
+                        override fun onCancelled(error: DatabaseError) {
+                            // Manejo del error si es necesario
+                        }
+                    })
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                // Manejo del error si es necesario
+            }
+        })
     }
+
+    private fun mostrarInfoUsuario(snapshot: DataSnapshot) {
+        // Obtener información del usuario
+        val nombres = "${snapshot.child("nombres").value}"
+        val imagen = "${snapshot.child("imagen").value}"
+        val estado = "${snapshot.child("estado").value}"
+        // recibimosToken = "${snapshot.child("fcmToken").value}"
+
+        // Poner información dentro de la vista Nueva
+        binding.txtEstadoChat.text = estado
+        // Poner información dentro de la vista
+        binding.txtNombreUsuario.text = nombres
+
+        try {
+            Glide.with(applicationContext)
+                .load(imagen) // Cargar imagen de firebase
+                .placeholder(R.drawable.perfil_usuario)
+                .into(binding.toolbarIv)
+        } catch (e: Exception) {
+            // Manejo del error si es necesario
+        }
+    }
+
 
     private fun imagenGaleria(){
         //Abrir actividad para selecionar una imagen de la galeria
@@ -294,9 +314,5 @@ class ChatActivity : AppCompatActivity() {
                 ).show()
             }
     }
-
-
-
-
 
 }
