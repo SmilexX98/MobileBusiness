@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".Fragmentos.FragmentUsuarios">
-    
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TILBuscarUsuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black">
-        
+
         <EditText
             android:id="@+id/et_buscar_usuario"
             android:hint="@string/et_buscar_usuario"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:background="@color/black"/>
-        
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView

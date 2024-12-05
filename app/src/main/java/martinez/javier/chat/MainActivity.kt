@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
+import martinez.javier.chat.Fragmentos.FragmentCategorias
 import martinez.javier.chat.Fragmentos.FragmentChats
 import martinez.javier.chat.Fragmentos.FragmentPerfil
 import martinez.javier.chat.Fragmentos.FragmentUsuarios
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         comprobarSesion()
 
         // Fragmento default
-        verFagmentoUsuarios()
+        verFagmentoCategorias()
 
         binding.bottomNV.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.item_usuarios -> {
                     // Visualizar el fragmento Usuarios
-                    verFagmentoUsuarios()
+                    verFagmentoCategorias()
                     true
                 }
                 R.id.item_chats -> {
@@ -91,12 +92,12 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    private fun verFagmentoUsuarios() {
-        binding.tvTitulo.text = "Usuarios"
+    private fun verFagmentoCategorias() {
+        binding.tvTitulo.text = "Categorias"
 
-        val fragment = FragmentUsuarios()
+        val fragment = FragmentCategorias()
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(binding.fragmentoFL.id, fragment, "Fragment Usuarios")
+        fragmentTransaction.replace(binding.fragmentoFL.id, fragment, "Fragment Categorias")
         fragmentTransaction.commit()
     }
 
@@ -204,7 +205,5 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()){esConcedido->
             //El permiso fue aceptado
         }
-
-
 
 }

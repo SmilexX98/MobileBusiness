@@ -79,6 +79,11 @@
     <string name="btn_cerrarVisualizador">Cerrar</string>
     <string name="txt_estado_chat">Online</string>
     <string name="checkBox_Vendedor">Vendedor?</string>
+    <string name="txt_btcomida">Comida</string>
+    <string name="txt_btbebidas">Bebidas</string>
+    <string name="txt_btropa">Ropa</string>
+    <string name="txt_btotros">Otros</string>
+    <string name="txt_categorias">Categorias</string>
 
 
 </resources>
