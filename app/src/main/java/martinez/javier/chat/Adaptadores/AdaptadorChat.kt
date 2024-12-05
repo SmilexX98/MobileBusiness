@@ -25,7 +25,7 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
     private val context : Context
     private val chatArray : ArrayList<Chat>
     private val firebaseAuth : FirebaseAuth
-    //private var chatRuta = ""
+    private var chatRuta = ""
 
     companion object{
         private const val MENSAJE_IZQUIERDA = 0 //Referencia a los mensaje recibidos
@@ -71,11 +71,11 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
             holder.tv_mensaje.text = mensaje//Mostrar mensaje
 
             //Compra cuales mensajes enviamos y cuales recibiedno
-            /*if (modeloChat.emisorUid.equals(firebaseAuth.uid)){//Si el emisor es igual al actual = nosotoos enviamos msj
+            if (modeloChat.emisorUid.equals(firebaseAuth.uid)){//Si el emisor es igual al actual = nosotoos enviamos msj
                 holder.itemView.setOnClickListener {
                     val opciones = arrayOf<CharSequence>("Eliminar","Cancelar")
                     val builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-                    builder.setTitle("¿Que hacer?")
+                    builder.setTitle("¿Qué hacer?")
                     builder.setItems(opciones, DialogInterface.OnClickListener { dialog, which ->
                         if (which == 0){
                             //Seleccion eliminar msj
@@ -84,7 +84,7 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
                     })
                     builder.show()
                 }
-            }*/
+            }
 
 
         }
@@ -103,11 +103,11 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
 
             }
             //Comprobar quien si uno fue quien envio la imagen
-            /*if (modeloChat.emisorUid.equals(firebaseAuth.uid)){
+            if (modeloChat.emisorUid.equals(firebaseAuth.uid)){
                 holder.itemView.setOnClickListener {
                     val opciones = arrayOf<CharSequence>("Eliminar", "Ver", "Cancelar")
                     val builder : AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-                    builder.setTitle("¿Que hacer?")
+                    builder.setTitle("¿Qué hacer?")
                     builder.setItems(opciones, DialogInterface.OnClickListener { dialog, which ->
                         if (which == 0){
                             //Seleccion eliminar msj (imagen)
@@ -135,12 +135,12 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
                     })
                     builder.show()
                 }
-            }*/
+            }
         }
 
     }
 
-    /*private fun eliminarMensaje(position: Int, holder: AdaptadorChat.HolderChat, modeloChat: Chat) {
+    private fun eliminarMensaje(position: Int, holder: AdaptadorChat.HolderChat, modeloChat: Chat) {
         //Obteniendo ruta para podder ubicar los mensajes
         chatRuta = Constantes.rutaChat(modeloChat.receptorUid, modeloChat.emisorUid)
         val ref = FirebaseDatabase.getInstance().reference.child("Chats")//Referencia a la BD de los "Chats"
@@ -186,7 +186,7 @@ class AdaptadorChat : RecyclerView.Adapter<AdaptadorChat.HolderChat> {
         dialog.show()
         dialog.setCanceledOnTouchOutside(false)
 
-    }*/
+    }
 
     override fun getItemViewType(position: Int): Int {
         //Verificar si uno mismo es el receptor o el emisor
