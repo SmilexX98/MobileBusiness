@@ -29,7 +29,7 @@ class OlvidePasswordActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Espere por favor")
+        progressDialog.setTitle("Espere por favor...")
         progressDialog.setCanceledOnTouchOutside(false)
 
         //Evento

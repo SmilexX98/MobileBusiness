@@ -36,10 +36,13 @@ class LoginEmailActivity : AppCompatActivity() {
             validarInformacion()
         }
 
+        binding.tvRecuperarCuenta.setOnClickListener {
+            startActivity(Intent(applicationContext, OlvidePasswordActivity::class.java))
+        }
+
 
         binding.tvRegistrarme.setOnClickListener {
             startActivity(Intent(applicationContext, RegistroEmailActivity::class.java))
-
         }
 
 

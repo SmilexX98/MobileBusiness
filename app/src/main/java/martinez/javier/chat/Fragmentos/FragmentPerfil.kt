@@ -51,6 +51,10 @@ class FragmentPerfil : Fragment() {
             startActivity(Intent(mContext, EditarInformacionActivity::class.java))
         }
 
+        binding.btnCambiarPass.setOnClickListener {
+            startActivity(Intent(mContext, CambiarPasswordActivity::class.java))
+        }
+
         binding.btnCerrarsesion.setOnClickListener {
             firebaseAuth.signOut() //Cerrar sesión
             startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
@@ -119,8 +123,8 @@ class FragmentPerfil : Fragment() {
         }
 
         // Eliminar si se decide no ingresar por email
-        // if (proveedor == "Email") {
-        //    binding.btnCambiarPass.visibility = View.VISIBLE
-        // }
+        if (proveedor == "Email") {
+            binding.btnCambiarPass.visibility = View.VISIBLE
+        }
     }
 }
