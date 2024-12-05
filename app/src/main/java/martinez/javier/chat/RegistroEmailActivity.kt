@@ -21,20 +21,21 @@ class RegistroEmailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         binding = ActivityRegistroEmailBinding.inflate(layoutInflater)
-
-        enableEdgeToEdge()
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+
         progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Espere por favor")
+        progressDialog.setTitle("Por favor espere...")
         progressDialog.setCanceledOnTouchOutside(false)
 
         binding.btnRegistrar.setOnClickListener {
             validarInformacion()
         }
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -43,36 +44,29 @@ class RegistroEmailActivity : AppCompatActivity() {
         }
     }
 
-
-    //Variables vacias para almacenar los datos que el usuario ingrese en las vistas
-
-
     private var nombres = ""
     private var email = ""
     private var password = ""
     private var r_password = ""
-
-    //Obtener la informacion ingresada por el usuario
     private fun validarInformacion() {
         nombres = binding.etNombres.text.toString().trim()
         email = binding.etEmail.text.toString().trim()
         password = binding.etPassword.text.toString().trim()
         r_password = binding.etRPassword.text.toString().trim()
 
-        //Validacion correspondientes de los campos (No tienen que estar vacios)
         if (nombres.isEmpty()){
-            binding.etNombres.error="Ingrese nombre"
-            binding.etNombres.requestFocus() //Para que se quede el punteo dentro de ees campo
+            binding.etNombres.error = "Ingrese nombre"
+            binding.etNombres.requestFocus()
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            binding.etEmail.error = "Correo inválido"
+            binding.etEmail.error = "Correo invalido"
             binding.etEmail.requestFocus()
         }
         else if (email.isEmpty()){
             binding.etEmail.error = "Ingrese correo"
             binding.etEmail.requestFocus()
         }
-        else if (password.isEmpty()){
+        else if(password.isEmpty()){
             binding.etPassword.error = "Ingrese contraseña"
             binding.etPassword.requestFocus()
         }
@@ -81,13 +75,12 @@ class RegistroEmailActivity : AppCompatActivity() {
             binding.etRPassword.requestFocus()
         }
         else if (password != r_password){
-            binding.etRPassword.error ="No coinciden las contraseñas"
+            binding.etRPassword.error = "No coinciden las contraseñas"
             binding.etRPassword.requestFocus()
         }
         else{
             registrarUsuario()
         }
-
     }
 
     private fun registrarUsuario() {
@@ -106,20 +99,20 @@ class RegistroEmailActivity : AppCompatActivity() {
                     "Falló la cracion de la cuenta debudo a ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
+
     }
 
     private fun actualizarInformacion() {
         progressDialog.setMessage("Guardando información")
 
-        //Identificador del usuario
+        // Identificador del usuario
         val uidU = firebaseAuth.uid
         val nombresU = nombres
         val emailU = firebaseAuth.currentUser!!.email
-        val tiempoR =Constantes.obtenerTiempoD()
+        val tiempoR = Constantes.obtenerTiempoD()
 
-        //Enviar la informacion a firebase
+        // Enviar la información a Firebase
         val datosUsuario = HashMap<String, Any>()
         datosUsuario["uid"] = "$uidU"
         datosUsuario["nombres"] = "$nombresU"
@@ -127,30 +120,33 @@ class RegistroEmailActivity : AppCompatActivity() {
         datosUsuario["tiempoR"] = "$tiempoR"
         datosUsuario["proveedor"] = "Email"
         datosUsuario["estado"] = "Online"
-
         datosUsuario["imagen"] = ""
 
-        val reference = FirebaseDatabase.getInstance().getReference("Usuarios")
-        reference.child(uidU!!)
-            .setValue(datosUsuario)
+        // Verificar si el CheckBox está marcado
+        val reference = if (binding.checkBoxVendedor.isChecked) {
+            // Si el checkbox está marcado, registrar en "Usuarios"
+            FirebaseDatabase.getInstance().getReference("Usuarios")
+        } else {
+            // Si el checkbox no está marcado, registrar en "NoUsuarios"
+            FirebaseDatabase.getInstance().getReference("NoUsuarios")
+        }
+
+        // Guardar los datos del usuario en la base de datos
+        reference.child(uidU!!).setValue(datosUsuario)
             .addOnSuccessListener {
                 progressDialog.dismiss()
 
                 startActivity(Intent(applicationContext, MainActivity::class.java))
                 finishAffinity()
-
-
             }
-            .addOnFailureListener {e->
+            .addOnFailureListener { e ->
                 progressDialog.dismiss()
                 Toast.makeText(
                     this,
-                    "Falló la cracion de la cuenta debudo a ${e.message}",
+                    "Falló la creación de la cuenta debido a ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
     }
-
 
 }

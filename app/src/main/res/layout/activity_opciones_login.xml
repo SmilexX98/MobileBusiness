@@ -71,4 +71,12 @@
         android:textSize="20sp"
         android:paddingLeft="30dp"/>
 
+    <CheckBox
+        android:id="@+id/checkBox_Vendedor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkBox_Vendedor"
+        android:textColor="@color/white"
+        android:layout_marginTop="15dp" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

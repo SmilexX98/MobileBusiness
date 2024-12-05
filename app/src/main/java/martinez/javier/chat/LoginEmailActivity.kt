@@ -29,16 +29,13 @@ class LoginEmailActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Espere por favor")
+        progressDialog.setTitle("Espere por favor...")
         progressDialog.setCanceledOnTouchOutside(false)
 
         binding.btnIngresar.setOnClickListener {
             validarInformacion()
         }
 
-        binding.tvRecuperarCuenta.setOnClickListener {
-            startActivity(Intent(applicationContext, OlvidePasswordActivity::class.java))
-        }
 
         binding.tvRegistrarme.setOnClickListener {
             startActivity(Intent(applicationContext, RegistroEmailActivity::class.java))
@@ -81,7 +78,7 @@ class LoginEmailActivity : AppCompatActivity() {
     }
 
     private fun logearUsuario() {
-        progressDialog.setMessage("Ingresando")
+        progressDialog.setMessage("Ingresando...")
         progressDialog.show()
 
         firebaseAuth.signInWithEmailAndPassword(email, password)

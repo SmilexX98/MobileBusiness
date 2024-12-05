@@ -89,7 +89,15 @@
             android:textColor="@color/white"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-    
+
+    <CheckBox
+        android:id="@+id/checkBox_Vendedor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkBox_Vendedor"
+        android:textColor="@color/white"
+        android:layout_marginTop="15dp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_Registrar"
         android:text="@string/btn_Registrar"

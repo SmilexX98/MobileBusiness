@@ -25,8 +25,8 @@ import martinez.javier.chat.databinding.FragmentPerfilBinding
 
 class FragmentPerfil : Fragment() {
 
-    private lateinit var binding : FragmentPerfilBinding
-    private lateinit var mContext : Context
+    private lateinit var binding: FragmentPerfilBinding
+    private lateinit var mContext: Context
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onAttach(context: Context) {
@@ -35,12 +35,10 @@ class FragmentPerfil : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = FragmentPerfilBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    //Para realizar instancia de firebaseAuth
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -53,93 +51,76 @@ class FragmentPerfil : Fragment() {
             startActivity(Intent(mContext, EditarInformacionActivity::class.java))
         }
 
-        //ELIMINAR SI SE DECIDE NO INGRESAR POR EMAIL
-        binding.btnCambiarPass.setOnClickListener {
-            startActivity(Intent(mContext, CambiarPasswordActivity::class.java))
-        }
-
         binding.btnCerrarsesion.setOnClickListener {
-           /* firebaseAuth.signOut() //Cerrar sesion
+            firebaseAuth.signOut() //Cerrar sesión
             startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
-            activity?.finishAffinity() */
-            actualizarEstado()
-            cerrarSesion()
+            activity?.finishAffinity()
         }
-    }
-
-    private fun cerrarSesion() {
-        object : CountDownTimer(3000,1000){
-            override fun onTick(p0: Long) {
-
-            }
-
-            override fun onFinish() {
-                //Despues de 10 segundos se cerrara la sesion, se ejecuta lo siguiente
-                firebaseAuth.signOut() //Cerrar sesion
-                startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
-                activity?.finishAffinity()
-            }
-
-        }.start()
-    }
-
-    private fun actualizarEstado(){
-        val ref = FirebaseDatabase.getInstance().reference.child("Usuarios").child(firebaseAuth.uid!!)
-        val hashMap = HashMap<String,Any>()
-        hashMap["estado"] = "Offline"
-        ref!!.updateChildren(hashMap)
     }
 
     private fun cargarInformacion() {
-        val ref = FirebaseDatabase.getInstance().getReference("Usuarios") //Base de datos dondes estan los usuarios es "Usuarios"
-        ref.child("${firebaseAuth.uid}")
-            .addValueEventListener(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    //Obtener los datos de firebase en las variables
-                    val nombres = "${snapshot.child("nombres").value}"
-                    val email = "${snapshot.child("email").value}"
-                    val proveedor = "${snapshot.child("proveedor").value}"
-                    var t_registro = "${snapshot.child("tiempoR").value}"
-                    val imagen = "${snapshot.child("imagen").value}"
+        val uid = firebaseAuth.uid!!
+        val refUsuarios = FirebaseDatabase.getInstance().getReference("Usuarios")
+        val refNoUsuarios = FirebaseDatabase.getInstance().getReference("NoUsuarios")
 
-                    if (t_registro == "null"){
-                        t_registro = "0"
-                    }
-                    //Conversión a fecha
-                    val fecha = Constantes.formatoFecha(t_registro.toLong())
+        refUsuarios.child(uid).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    mostrarInformacion(snapshot)
+                } else {
+                    refNoUsuarios.child(uid).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                mostrarInformacion(snapshot)
+                            }
+                        }
 
-                    //Poner la informacion en las vistas o sea en los TextViews
-                    binding.tvNombres.text = nombres
-                    binding.tvEmail.text = email
-                    binding.tvProveedor.text = proveedor
-                    binding.tvTRegistro.text = fecha
-
-                    //Poner la imagen en el ImageView (Iv)
-                    try {
-                        Glide.with(mContext.applicationContext)
-                            .load(imagen)
-                            .placeholder(R.drawable.ic_img_perfil)//Se muestra esta imagen mientras se carga la otra (Servidor)
-                            .into(binding.ivPerfil)
-                    }catch (e:Exception){
-                        Toast.makeText(
-                            mContext,
-                            "${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    //ELIMINAR SI SE DECIDE NO INGRESAR POR EMAIL
-                    if (proveedor == "Email"){
-                        binding.btnCambiarPass.visibility = View.VISIBLE
-                    }
-
-
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(mContext, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(mContext, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
+    private fun mostrarInformacion(snapshot: DataSnapshot) {
+        val nombres = "${snapshot.child("nombres").value}"
+        val email = "${snapshot.child("email").value}"
+        val proveedor = "${snapshot.child("proveedor").value}"
+        var t_registro = "${snapshot.child("tiempoR").value}"
+        val imagen = "${snapshot.child("imagen").value}"
+
+        if (t_registro == "null") {
+            t_registro = "0"
+        }
+
+        // Conversión a fecha
+        val fecha = Constantes.formatoFecha(t_registro.toLong())
+
+        // Poner la información en las vistas o sea en los TextViews
+        binding.tvNombres.text = nombres
+        binding.tvEmail.text = email
+        binding.tvProveedor.text = proveedor
+        binding.tvTRegistro.text = fecha
+
+        // Poner la imagen en el ImageView (Iv)
+        try {
+            Glide.with(mContext.applicationContext)
+                .load(imagen)
+                .placeholder(R.drawable.ic_img_perfil) // Se muestra esta imagen mientras se carga la otra (Servidor)
+                .into(binding.ivPerfil)
+        } catch (e: Exception) {
+            Toast.makeText(mContext, "${e.message}", Toast.LENGTH_SHORT).show()
+        }
+
+        // Eliminar si se decide no ingresar por email
+        // if (proveedor == "Email") {
+        //    binding.btnCambiarPass.visibility = View.VISIBLE
+        // }
+    }
 }
