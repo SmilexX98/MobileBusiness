@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -307,11 +308,11 @@ class ChatActivity : AppCompatActivity() {
                 progressDialog.dismiss()
                 binding.etMensajeChat.setText("")//Si se eniva exitosamente el mensaje se limpia el campo de texto
 
-                /*if (tipoMensaje == Constantes.MENSAJE_TEXTO){
+                if (tipoMensaje == Constantes.MENSAJE_TEXTO){
                     prepararNotificacion(mensaje)
                 }else{
                     prepararNotificacion("Imagen enviada")
-                }*/
+                }
             }
             .addOnFailureListener {e->
                 progressDialog.dismiss()
@@ -322,6 +323,79 @@ class ChatActivity : AppCompatActivity() {
                 ).show()
             }
     }
+
+    private fun obtenerAccessToken() : String?{
+        return try {
+            val servicioCuenta = applicationContext.assets.open("service-account.json")
+
+            val googleCredentials = GoogleCredentials.fromStream(servicioCuenta)
+                .createScoped(listOf("https://www.googleapis.com/auth/firebase.messaging"))
+
+            googleCredentials.refreshIfExpired()
+            googleCredentials.accessToken.tokenValue
+        }catch (e:Exception){
+            null
+        }
+    }
+
+    private fun prepararNotificacion(mensaje: String){
+        val notificationJo = JSONObject()
+        val messageJo = JSONObject()
+        val notificationPayload = JSONObject()
+        val messageData = JSONObject()
+
+        try {
+            notificationPayload.put("title", "Nuevo mensaje")
+            notificationPayload.put("body", mensaje)
+
+            messageData.put("notificationType", "nuevo_mensaje")
+            messageData.put("senderUid", firebaseAuth.uid)
+
+            messageJo.put("token", recibimosToken)
+            messageJo.put("notification", notificationPayload)
+            messageJo.put("data", messageData)
+            notificationJo.put("message", messageJo)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+        enviarNotificacion(notificationJo)
+
+    }
+
+    private fun enviarNotificacion(notificationJo: JSONObject) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val url = "https://fcm.googleapis.com/v1/projects/mobilebusiness-51055/messages:send"
+            val accessToken = obtenerAccessToken()
+            if (accessToken!=null){
+                withContext(Dispatchers.Main){
+                    val jsonObjectRequest : JsonObjectRequest = object : JsonObjectRequest(
+                        Method.POST,
+                        url,
+                        notificationJo,
+                        com.android.volley.Response.Listener {
+                            //Solicitud exitosa
+                        },
+                        com.android.volley.Response.ErrorListener {
+                            //Solicitod fallida
+                        }
+                    ){
+                        override fun getHeaders(): MutableMap<String, String> {
+                            val headers = HashMap<String, String>()
+                            headers["Content-Type"] = "application/json"
+                            headers["Authorization"] = "Bearer $accessToken"
+                            return headers
+                        }
+                    }
+                    Volley.newRequestQueue(this@ChatActivity).add(jsonObjectRequest)
+
+                }
+            }else{
+                Log.e("Error", "Error al obtener el token")
+            }
+        }
+
+    }
+
 
     // Funcion para actualizar estado "Online" u "Offline"
     private fun actualizarEstado(estado: String) {
