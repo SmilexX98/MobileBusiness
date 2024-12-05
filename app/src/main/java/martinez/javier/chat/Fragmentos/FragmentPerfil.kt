@@ -22,7 +22,6 @@ import martinez.javier.chat.OpcionesLoginActivity
 import martinez.javier.chat.R
 import martinez.javier.chat.databinding.FragmentPerfilBinding
 
-
 class FragmentPerfil : Fragment() {
 
     private lateinit var binding: FragmentPerfilBinding
@@ -47,7 +46,6 @@ class FragmentPerfil : Fragment() {
         cargarInformacion()
 
         binding.btnActualizarInfo.setOnClickListener {
-            //mContext = de este fragmento a....
             startActivity(Intent(mContext, EditarInformacionActivity::class.java))
         }
 
@@ -56,24 +54,45 @@ class FragmentPerfil : Fragment() {
         }
 
         binding.btnCerrarsesion.setOnClickListener {
+            actualizarEstado()
             cerrarSesion()
         }
     }
 
     private fun cerrarSesion() {
-        object : CountDownTimer(3000,1000){
+        object : CountDownTimer(1000, 1000) {
             override fun onTick(p0: Long) {
 
             }
 
             override fun onFinish() {
-                //Despues de 3 segundos se cerrara la sesion, se ejecuta lo siguiente
-                firebaseAuth.signOut() //Cerrar sesion
+                firebaseAuth.signOut() // Cerrar sesión
                 startActivity(Intent(mContext, OpcionesLoginActivity::class.java))
                 activity?.finishAffinity()
             }
-
         }.start()
+    }
+
+    private fun actualizarEstado() {
+        val uid = firebaseAuth.uid ?: return
+        val refUsuarios = FirebaseDatabase.getInstance().getReference("Usuarios")
+        val refNoUsuarios = FirebaseDatabase.getInstance().getReference("NoUsuarios")
+        val hashMap = HashMap<String, Any>()
+        hashMap["estado"] = "Offline"
+
+        refUsuarios.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    refUsuarios.child(uid).updateChildren(hashMap)
+                } else {
+                    refNoUsuarios.child(uid).updateChildren(hashMap)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(mContext, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun cargarInformacion() {
